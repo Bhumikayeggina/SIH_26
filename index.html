@@ -69,23 +69,6 @@
         </div>
 
         <div class="monitor-grid">
-          <section class="data-window temp-window panel">
-            <div class="window-bar">
-              <span>TEMP_SENSOR.EXE</span>
-              <div class="window-controls"><i></i><i></i></div>
-            </div>
-            <div class="window-body metric-body">
-              <div class="metric-icon temp-icon" aria-hidden="true">
-                <span></span>
-              </div>
-              <p class="metric-label">SKIN TEMP</p>
-              <div class="metric-value"><strong id="tempValue">36.7</strong><span>°C</span></div>
-              <div class="range-row"><span>NORMAL RANGE</span><b>36.1—37.2</b></div>
-              <div class="mini-track"><span id="tempTrack"></span></div>
-              <div class="metric-foot positive"><span>↗</span> +0.2° / LAST HR</div>
-            </div>
-          </section>
-
           <section class="camera-window panel">
             <div class="window-bar bright">
               <span>VISUAL_SCANNER // INPUT MATRIX</span>
@@ -127,6 +110,23 @@
           </section>
 
           <div class="side-stack">
+            <section class="data-window temp-window panel">
+              <div class="window-bar">
+                <span>TEMP_SENSOR.EXE</span>
+                <div class="window-controls"><i></i><i></i></div>
+              </div>
+              <div class="window-body metric-body">
+                <div class="metric-icon temp-icon" aria-hidden="true">
+                  <span></span>
+                </div>
+                <p class="metric-label">SKIN TEMP</p>
+                <div class="metric-value"><strong id="tempValue">36.7</strong><span>°C</span></div>
+                <div class="range-row"><span>NORMAL RANGE</span><b>36.1—37.2</b></div>
+                <div class="mini-track"><span id="tempTrack"></span></div>
+                <div class="metric-foot positive"><span>↗</span> +0.2° / LAST HR</div>
+              </div>
+            </section>
+
             <section class="data-window moisture-window panel">
               <div class="window-bar">
                 <span>MOISTURE_SENSOR.EXE</span>
@@ -157,7 +157,31 @@
               </div>
             </section>
           </div>
+          <!-- LIVE TELEMETRY TABLE -->
+<section class="telemetry-window panel">
+  <div class="window-bar bright">
+    <span>LIVE_TELEMETRY.LOG</span>
+    <div class="window-controls"><i></i><i></i></div>
+  </div>
 
+  <div class="telemetry-table-wrap">
+    <table class="telemetry-table">
+      <thead>
+        <tr>
+          <th>TIME</th>
+          <th>TEMP</th>
+          <th>MOISTURE</th>
+          <th>SPO2</th>
+          <th>HEALING</th>
+        </tr>
+      </thead>
+
+      <tbody id="telemetryBody">
+        <!-- Live rows are inserted here by app.js -->
+      </tbody>
+    </table>
+  </div>
+</section>
           <section class="healing-window panel">
             <div class="healing-topline">
               <div>

@@ -40,6 +40,38 @@ function updateClock() {
   $('.bottom-right').textContent = now.toLocaleTimeString('en-GB', { hour12: false });
 }
 
+function addTelemetryRow() {
+  const tbody = $('#telemetryBody');
+
+  if (!tbody) return;
+
+  const now = new Date();
+
+  const time = now.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+
+  const row = document.createElement('tr');
+
+  row.innerHTML = `
+    <td>${time}</td>
+    <td>${state.temperature.toFixed(1)}°C</td>
+    <td>${Math.round(state.moisture)}%</td>
+    <td>${Math.round(state.spo2)}%</td>
+    <td>${Math.round(state.healing)}%</td>
+  `;
+
+  // Newest reading goes at the top
+  tbody.prepend(row);
+
+  // Keep only the latest 8 readings
+  while (tbody.children.length > 8) {
+    tbody.removeChild(tbody.lastElementChild);
+  }
+}
+
 function renderSensorData(data) {
   if (Number.isFinite(data.temperature)) state.temperature = data.temperature;
   if (Number.isFinite(data.moisture)) state.moisture = data.moisture;
@@ -51,10 +83,33 @@ function renderSensorData(data) {
   $('#moistureValue').textContent = Math.round(state.moisture);
   $('#spo2Value').textContent = Math.round(state.spo2);
   $('#healingValue').textContent = Math.round(state.healing);
+  addTelemetryRow();
   $('#tempTrack').style.width = `${Math.min(100, Math.max(0, (state.temperature - 32) * 14))}%`;
   $('#moistureTrack').style.width = `${state.moisture}%`;
   $('#spo2Track').style.width = `${Math.min(100, Math.max(0, ((state.spo2 - 90) / 10) * 100))}%`;
   $('#healingTrack').style.width = `${state.healing}%`;
+  function updateHealingColor() {
+  const track = $('#healingTrack');
+
+  if (!track) return;
+
+  track.classList.remove(
+    'healing-red',
+    'healing-yellow',
+    'healing-green'
+  );
+
+  const healing = Number(state.healing);
+
+  if (healing < 40) {
+    track.classList.add('healing-red');
+  } else if (healing < 70) {
+    track.classList.add('healing-yellow');
+  } else {
+    track.classList.add('healing-green');
+  }
+}
+updateHealingColor();
   $('.pixel-progress').setAttribute('aria-label', `Healing progress: ${Math.round(state.healing)} percent`);
   $('#healingExpectedLabel').textContent = `EXPECTED ${EXPECTED_HEALING}%`;
   const healingVariance = Math.round(state.healing - EXPECTED_HEALING);
@@ -79,7 +134,7 @@ function startSensorConnection() {
         temperature: 36.7 + (Math.random() - 0.5) * 0.18,
         moisture: 61 + (Math.random() - 0.5) * 1.3,
         spo2: 98 + (Math.random() - 0.5) * 0.6,
-        healing: 68 + (Math.random() - 0.5) * 0.12,
+        healing: 90,
       });
     }, 2200);
     return;
