@@ -7,5 +7,5 @@ def test_camera_source_accepts_local_index():
 
 
 def test_camera_source_accepts_phone_stream_url():
-    url = "http://192.168.1.25:8080/video"
+    url = "http://100.120.118.51:8080/video"
     assert parse_camera_source(url) == url
