@@ -134,7 +134,7 @@ function startSensorConnection() {
         temperature: 36.7 + (Math.random() - 0.5) * 0.18,
         moisture: 61 + (Math.random() - 0.5) * 1.3,
         spo2: 98 + (Math.random() - 0.5) * 0.6,
-        healing: 90,
+        healing: 68 + (Math.random() - 0.5) * 0.12,
       });
     }, 2200);
     return;
